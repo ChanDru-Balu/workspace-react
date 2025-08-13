@@ -13,8 +13,10 @@ function App() {
     }
 
     function addTodo(){
+      if(inputVal !=''){
       setTodos((prevTodos)=>[...prevTodos , inputVal])
-      setInputVal(' ')
+      setInputVal('')
+      }
     }
 
     function deleteTodo(todoIndex){
@@ -29,7 +31,7 @@ function App() {
     <main>
       <h1>TO-DO List</h1>
 
-      <InputContainer value={inputVal} writeTodo={writeTodo} addTodo={addTodo} />
+      <InputContainer inputVal={inputVal} writeTodo={writeTodo} addTodo={addTodo} />
       <TodoContainer todos={todos} deleteTodo={deleteTodo} />
 
       
