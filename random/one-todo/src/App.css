@@ -1,0 +1,12 @@
+.text-center {
+    text-align: center;
+}
+
+.todo-input {
+    width: 40%;
+}
+
+.single-row {
+    display: flex;
+    flex-direction: row;
+}
