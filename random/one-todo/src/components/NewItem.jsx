@@ -1,13 +1,19 @@
-import React from 'react'
+import {useState} from 'react';
 
-function NewItem() {
+function NewItem({addTodo}){
+  const [newItem , setNewItem ] = useState("");
+  function handleSubmit(e){
+    e.preventDefault()
+    if(newItem == "") return
+    addTodo(newItem)
+    setNewItem("");
+  }
   return (
-    <div>
-        <h3  >New Item</h3>
-        <input type='text' className='todo-input' />
-        <br />
-        <button>Add</button>
-    </div>
+    <form onSubmit={handleSubmit} > 
+      <label>New Item</label>
+      <input type="text" name="new" id="new" value={newItem} onChange={e=>setNewItem(e.target.value)} />
+      <button type="submit" >Add</button>
+    </form>
   )
 }
 

@@ -1,17 +1,26 @@
-import React, { useState } from 'react'
+import { useState , useEffect } from "react";
+import NewItem from "./components/NewItem";
+import TodoList from "./components/TodoList";
 
-function App() {
+function App(){
 
-  const [newItem, setNewItem] = useState('');
-  const [todos, setTodos] = useState([]);
+  const [todos , setTodos] = useState(()=>{
+    let localTodos = localStorage.getItem('Items');
+    if(localTodos == null) return []
+    return JSON.parse(localTodos)
+  })
 
-  function addTodos(e) {
-    e.preventDefault()
-    setTodos(currentTodos => [...currentTodos, { id: crypto.randomUUID(), task: newItem, completed: false }])
-    setNewItem('')
+  useEffect(()=>{
+    localStorage.setItem('Items',JSON.stringify(todos))
+  },[todos])
+
+  function addTodo(title){
+    console.log({title})
+    setTodos([...todos , {id: crypto.randomUUID() , title , completed: false}])
   }
 
-  function toggleTodo(id , completed){
+  
+  function toggleTodo(id,completed){
     setTodos(currentTodos=>{
       return currentTodos.map(todo=>{
         if(todo.id == id){
@@ -23,30 +32,14 @@ function App() {
   }
 
   function deleteTodo(id){
-    setTodos(currentTodos=> currentTodos.filter(todo=>todo.id !== id) )
+    setTodos(currentTodos=> currentTodos.filter(todo=> todo.id != id) )
   }
 
   return (
     <>
-      <h1>To-Do </h1>
-
-      <form >
-        <label>New Item</label>
-        <input type="text" value={newItem} onChange={e => setNewItem(e.target.value)} name="item" id="item" />
-        <button onClick={addTodos} >Add</button>
-      </form>
-
-      <h2>Todo List</h2>
-      <ul style={{ listStyleType: 'none' }} >
-        {todos.map(todo => {
-          return <li key={todo.id} >
-            <input type="checkbox" checked={todo.completed} onChange={(e)=>toggleTodo(todo.id,e.target.checked)} name="todo" id="todo" />
-            {todo.task}
-            <button onClick={()=>deleteTodo(todo.id)} >Delete</button>
-          </li>
-        })}
-
-      </ul>
+      <h1>Todo</h1>
+      <NewItem  addTodo={addTodo} />
+      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
     </>
   )
 }
